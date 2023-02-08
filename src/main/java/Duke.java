@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Duke {
     public static void main(String[] args) {
-        String[] tasks = new String[100];
+        ArrayList<Task> tasks = new ArrayList<Task>();
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -15,26 +15,37 @@ public class Duke {
         System.out.println(line + "     Hello! I'm Duke\n" + "     What can I do for you?\n" + line);
         String input = in.nextLine();
         while(!input.equals("bye")) {
-            if(input.equals("list")) {
+            String instruction = input.split("\\s+")[0];
+            String content;
+            if(instruction == input) {
+                content = input;
+            } else {
+                content = input.substring(instruction.length() + 1);
+            }
+            if(instruction.equals("mark")) {
+                int number = Integer.parseInt(content) - 1;
+                Task modified = tasks.get(number).markTast();
+                tasks.remove(number);
+                tasks.add(number, modified);
+                System.out.println(line + "     Nice! I've marked this task as done:" + "\n" + "       " +modified.toString() + "\n" + line);
+            } else if(instruction.equals("unmark")) {
+                int number = Integer.parseInt(content) - 1;
+                Task modified = tasks.get(number).unmarkTask();
+                tasks.remove(number);
+                tasks.add(number, modified);
+                System.out.println(line +"      OK, I've marked this task as not done yet:" + "\n" + "       "  + modified.toString() + "\n" + line);
+            } else if(instruction.equals("list")) {
                 System.out.println(line);
-                for(int i = 0; i < 100; i++) {
-                    if(tasks[i] != null) {
-                        System.out.println("     " + (i + 1) + "." + tasks[i]);
-                    } else{
-                        break;
-                    }
+                for(int i = 1; i <= tasks.size(); i++) {
+                    System.out.println(i + ". " + tasks.get(i - 1).toString());
                 }
                 System.out.println(line);
             } else {
-                for(int i = 0; i < 100; i++) {
-                    if(tasks[i] == null) {
-                        tasks[i] = input;
-                        break;
-                    }
-                }
+                tasks.add(new Task(input));
                 System.out.println(line + "     added: " + input + "\n" + line);
             }
-                input = in.nextLine();
+
+            input = in.nextLine();
         }
 
         System.out.println(line + "     Bye. Hope to see you again soon!" + "\n" + line);
