@@ -17,7 +17,7 @@ public class Duke {
         while(!input.equals("bye")) {
             String instruction = input.split("\\s+")[0];
             String content;
-            if(instruction == input) {
+            if(instruction.equals(input)) {
                 content = input;
             } else {
                 content = input.substring(instruction.length() + 1);
@@ -40,14 +40,37 @@ public class Duke {
                     System.out.println(i + ". " + tasks.get(i - 1).toString());
                 }
                 System.out.println(line);
-            } else {
-                tasks.add(new Task(input));
-                System.out.println(line + "     added: " + input + "\n" + line);
+            } else if(instruction.equals("todo")){
+                Task todoTask = new ToDos(content);
+                tasks.add(todoTask);
+                printAdd(tasks.size(), todoTask);
+            } else if(instruction.equals("deadline")) {
+                String actualContent = content.split("/")[0];
+                String time = content.split("/")[1];
+                Task deadlineTask = new DeadLines(actualContent, time);
+                tasks.add(deadlineTask);
+                printAdd(tasks.size(), deadlineTask);
+            } else if(instruction.equals("event")) {
+                String actualContent = content.split("/")[0];
+                String time = content.split("/")[1] + content.split("/")[2];
+                Task eventTask = new Events(actualContent, time);
+                tasks.add(eventTask);
+                printAdd(tasks.size(), eventTask);
+            }
+            else {
+                System.out.println(line + "     error! Please type in again" +"\n" + line);
             }
 
             input = in.nextLine();
         }
 
         System.out.println(line + "     Bye. Hope to see you again soon!" + "\n" + line);
+    }
+
+    public static void printAdd(int size, Task thistask) {
+        String line = "     ____________________________________________________________     \n";
+        System.out.println(line + "     Got it. I've added the task:" + "\n" + "       " + thistask.toString()
+                + "\n" + "     Now you have " + size + " tasks in the list." + "\n" + line);
+
     }
 }
