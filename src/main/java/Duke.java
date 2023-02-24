@@ -18,7 +18,7 @@ public class Duke {
             String instruction = input.split("\\s+")[0];
             String content;
             if(instruction.equals(input)) {
-                content = input;
+                content = "";
             } else {
                 content = input.substring(instruction.length() + 1);
             }
@@ -41,9 +41,13 @@ public class Duke {
                 }
                 System.out.println(line);
             } else if(instruction.equals("todo")){
-                Task todoTask = new ToDos(content);
-                tasks.add(todoTask);
-                printAdd(tasks.size(), todoTask);
+                if(content.equals("")) {
+                    System.out.println(line + "     ☹ OOPS!!! The description of a todo cannot be empty." +"\n" + line);
+                } else {
+                    Task todoTask = new ToDos(content);
+                    tasks.add(todoTask);
+                    printAdd(tasks.size(), todoTask);
+                }
             } else if(instruction.equals("deadline")) {
                 String actualContent = content.split("/")[0];
                 String time = content.split("/")[1];
@@ -58,7 +62,7 @@ public class Duke {
                 printAdd(tasks.size(), eventTask);
             }
             else {
-                System.out.println(line + "     error! Please type in again" +"\n" + line);
+                System.out.println(line + "     ☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +"\n" + line);
             }
 
             input = in.nextLine();
