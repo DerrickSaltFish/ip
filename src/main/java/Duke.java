@@ -60,6 +60,23 @@ public class Duke {
                 Task eventTask = new Events(actualContent, time);
                 tasks.add(eventTask);
                 printAdd(tasks.size(), eventTask);
+            } else if(instruction.equals("delete")) {
+                String strnumber = content;
+                int maxnumber = tasks.size();
+                if(!strnumber.matches("[0-9]+")) {
+                    System.out.println(line + "     ☹ OOPS!!! The number must be an integer between 1 and " + maxnumber
+                            + "\n" + line);
+                } else {
+                    int number = Integer.parseInt(strnumber);
+                    if(number >= 1 && number <= maxnumber) {
+                        Task deletedTask = tasks.get(number - 1);
+                        tasks.remove(number - 1);
+                        printDelete(maxnumber - 1, deletedTask);
+                    } else {
+                        System.out.println(line + "     ☹ OOPS!!! The number must be between 1 and " + maxnumber
+                                + "\n" + line);
+                    }
+                }
             }
             else {
                 System.out.println(line + "     ☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +"\n" + line);
@@ -75,6 +92,10 @@ public class Duke {
         String line = "     ____________________________________________________________     \n";
         System.out.println(line + "     Got it. I've added the task:" + "\n" + "       " + thistask.toString()
                 + "\n" + "     Now you have " + size + " tasks in the list." + "\n" + line);
-
+    }
+    public static void printDelete(int size, Task thistask) {
+        String line = "     ____________________________________________________________     \n";
+        System.out.println(line + "     Got it. I've removed the task:" + "\n" + "       " + thistask.toString()
+                + "\n" + "     Now you have " + size + " tasks in the list." + "\n" + line);
     }
 }
